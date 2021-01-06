@@ -1,0 +1,106 @@
+# My solution:
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+
+from Queue import Queue
+class Solution(object):
+    def isSameTree(self, p, q):
+        """
+        :type p: TreeNode
+        :type q: TreeNode
+        :rtype: bool
+        """
+        if p and q:
+            if p.val != q.val:
+                return False
+        elif not p and not q:
+            return True
+        else:
+            return False
+        
+        p_queue = Queue()
+        q_queue = Queue()
+        
+        p_queue.put(p)
+        q_queue.put(q)
+        
+        while not p_queue.empty():
+            if p_queue.qsize() != q_queue.qsize():
+                return False
+            p_size = p_queue.qsize()
+            i = 0
+            p_arr = []
+            q_arr = []
+            while i < p_size:
+                i += 1
+                p_node = p_queue.get()
+                if p_node != None:
+                    p_arr.append(p_node.val)
+                    if p_node.left:
+                        p_queue.put(p_node.left)
+                    else:
+                        p_queue.put(None)
+                    if p_node.right:
+                        p_queue.put(p_node.right)
+                    else:
+                        p_queue.put(None)
+                else:
+                    p_arr.append(None)
+                
+                q_node = q_queue.get()
+                if q_node != None:
+                    q_arr.append(q_node.val)
+                    if q_node.left:
+                        q_queue.put(q_node.left)
+                    else:
+                        q_queue.put(None)
+                    if q_node.right:
+                        q_queue.put(q_node.right)
+                    else:
+                        q_queue.put(None)
+                else:
+                    q_arr.append(None)
+                
+            if p_arr != q_arr:
+                return False
+        
+        return True
+
+This solution is based on BFS. We insert elements of each layer into p_arr and q_arr by 2 loops. And return true if p_arr is same as q_arr.
+If node doesn't have left/right subnode, we insert None into arr.
+Edge case: Before BFS, check if p or q is None.
+
+# Solution 2:
+class Solution(object):
+    def isSameTree(self, p, q):
+        if p and q:
+            return p.val == q.val and self.isSameTree(p.left, q.left) and self.isSameTree(p.right, q.right)
+        return p is q   # when p is None or q is None or p and q are both None
+
+This is a very efficient solution based recursion.
+
+Note:
+Difference between is and ==:
+== based on value
+is based on var's address on memory
+
+# Solution 3:
+one-line solution based on solution 2:
+# Definition for a binary tree node.
+# class TreeNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.left = None
+#         self.right = None
+class Solution(object):
+    def isSameTree(self, p, q):
+        """
+        :type p: TreeNode
+        :type q: TreeNode
+        :rtype: bool
+        """
+        return p.val == q.val and self.isSameTree(p.left, q.left) and self.isSameTree(p.right, q.right) if p and q else p is q
