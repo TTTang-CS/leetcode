@@ -1,0 +1,19 @@
+S1 is just a very simple solution. The only thing we need to pay attention to is k = k % len(nums).
+It will recudce time complexity if k > len(nums).
+Time = O(k*n), n=len(nums)
+space = O(1)
+
+# Solution 1:
+class Solution(object):
+    def rotate(self, nums, k):
+        """
+        :type nums: List[int]
+        :type k: int
+        :rtype: None Do not return anything, modify nums in-place instead.
+        """
+        k %= len(nums)
+        i = 0
+        while i < k:
+            nums.insert(0, nums.pop())
+            i += 1
+        return
