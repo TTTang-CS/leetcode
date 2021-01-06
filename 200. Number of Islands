@@ -1,0 +1,92 @@
+This solution is based on DFS or BFS. 
+In solution1, I scan all elements in DFS and maintain an closed set for all explored set. If it's a M*N matirx, T(M, N) = O(2*(M*N)*(M*N))
+This is so time-consuming for a large matix. Thus, in solution 2, I set every explored node's value to 0 after adding its' child node instead of
+maintaining the closed set. Then, T(M, N) = O(2*(M*N)).
+
+# solution 2 (better solution)：
+class Solution(object):
+    def numIslands(self, grid):
+        """
+        :type grid: List[List[str]]
+        :rtype: int
+        """
+        def DFS(g):
+            if not stack:
+                return
+            (i, j) = stack.pop()
+            # after pop, append (i, j) into closed
+            # closed.append((i, j))
+            # up
+            x, y = i - 1, j
+            if x >= 0 and g[x][y] == "1":
+                stack.append((x, y))
+            # down
+            x, y = i + 1, j
+            if x < len(g) and g[x][y] == "1":
+                stack.append((x, y))
+            # left
+            x, y = i, j - 1
+            if y >= 0 and g[x][y] == "1":
+                stack.append((x, y))
+            # right
+            x, y = i, j + 1
+            if y < len(g[0]) and g[x][y] == "1":
+                stack.append((x, y))
+            g[i][j] = 0
+            return DFS(g)
+        
+        landNum = 0
+        stack = []
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                # if grid[i][j] == "1" and (i, j) not in closed:
+                if grid[i][j] == "1":
+                    stack.append((i, j))
+                    DFS(grid)
+                    landNum += 1
+        return landNum
+                    
+
+
+
+# Solution 1:
+class Solution(object):
+    def numIslands(self, grid):
+        """
+        :type grid: List[List[str]]
+        :rtype: int
+        """
+        def DFS(g):
+            if not stack:
+                return
+            (i, j) = stack.pop()
+            # after pop, append (i, j) into closed
+            closed.append((i, j))
+            # up
+            x, y = i - 1, j
+            if x >= 0 and g[x][y] == "1" and (x, y) not in closed:
+                stack.append((x, y))
+            # down
+            x, y = i + 1, j
+            if x < len(g) and g[x][y] == "1" and (x, y) not in closed:
+                stack.append((x, y))
+            # left
+            x, y = i, j - 1
+            if y >= 0 and g[x][y] == "1" and (x, y) not in closed:
+                stack.append((x, y))
+            # right
+            x, y = i, j + 1
+            if y < len(g[0]) and g[x][y] == "1" and (x, y) not in closed:
+                stack.append((x, y))
+            return DFS(g)
+        
+        landNum = 0
+        closed = []
+        stack = []
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == "1" and (i, j) not in closed:
+                    stack.append((i, j))
+                    DFS(grid)
+                    landNum += 1
+        return landNum
