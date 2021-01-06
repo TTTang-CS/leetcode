@@ -1,4 +1,6 @@
 This solution has O(N) time complexity and O(N) space complexity, which is very time-efficient.
+This solution avoids multiple loops by using hashmap.
+
 If we want to have less space complexity, we could quick-sort nums and find the target-nums[i] by two pointers.
 
 class Solution(object):
@@ -12,8 +14,6 @@ class Solution(object):
             else:
                 buff_dict[target - nums[i]] = i
                 
-这个方法使用 hashmap，避免使用了二次循环，有效的提高了效率。
-
 
 
 follow up: what if all number in nums are float?
