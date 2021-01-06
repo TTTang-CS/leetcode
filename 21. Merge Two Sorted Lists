@@ -1,0 +1,105 @@
+This question is how to merge to 2 sorted lists into one linked list.
+If we have 2 pointers looping over 2 sorted lists, insert the smaller pointed elements into linked list.
+This bascially what merge sort does. 
+
+# Better solution
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def mergeTwoLists(self, l1, l2):
+        """
+        :type l1: ListNode
+        :type l2: ListNode
+        :rtype: ListNode
+        """
+        res = ListNode(0)
+        cur = res
+        while l1 or l2:
+            if (not l1) or (l2 and l2.val <= l1.val):
+                cur.next = l2
+                l2 = l2.next
+            else:
+                cur.next = l1
+                l1 = l1.next
+            cur = cur.next
+        return res.next
+        
+
+
+# Solution 1:
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def mergeTwoLists(self, l1, l2):
+        """
+        :type l1: ListNode
+        :type l2: ListNode
+        :rtype: ListNode
+        """
+        if not l1 or not l2:
+            if not l1 and not l2:
+                return None
+            elif not l1:
+                return l2
+            elif not l2:
+                return l1
+            
+        if l1.val <= l2.val:
+            head, l1 = l1, l1.next
+        else:
+            head, l2 = l2, l2.next
+        
+        cur = head
+        while l1 and l2:
+            if l1.val >= l2.val:
+                cur.next, l2 = l2, l2.next
+                cur = cur.next
+            else:
+                cur.next, l1 = l1, l1.next
+                cur = cur.next
+        
+        if l1:
+            cur.next = l1
+            return head
+        elif l2:
+            cur.next = l2
+            return head
+        else:
+            return head
+
+# Solution 2:
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution:
+    def mergeTwoLists(self, a, b):
+        if a and b:
+            if a.val > b.val:
+                a, b = b, a
+            a.next = self.mergeTwoLists(a.next, b)
+        return a or b 
+
+This is a triky solution based on recursive algo.
+a always points to the smaller elements. So we would always return a.
+
+if not a or b and a.val > b.val:  <==>   if (not a) or (b and (a.val > b.val)):
+
+
+# Solution 3:
+def mergeTwoLists(self, a, b):
+    if not a or b and a.val > b.val:
+        a, b = b, a
+    if a:
+        a.next = self.mergeTwoLists(a.next, b)
+    return a
