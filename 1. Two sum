@@ -1,0 +1,23 @@
+This solution has O(N) time complexity and O(N) space complexity, which is very time-efficient.
+If we want to have less space complexity, we could quick-sort nums and find the target-nums[i] by two pointers.
+
+class Solution(object):
+    def twoSum(self, nums, target):
+        if len(nums) <= 1:
+            return False
+        buff_dict = {}
+        for i in range(len(nums)):
+            if nums[i] in buff_dict:
+                return [buff_dict[nums[i]], i]
+            else:
+                buff_dict[target - nums[i]] = i
+                
+这个方法使用 hashmap，避免使用了二次循环，有效的提高了效率。
+
+
+
+follow up: what if all number in nums are float?
+
+This is very triky, because whatever language we use, it cannot accurately store float. So if we take float as hashkey for dict, we would never find the right answer.
+
+A good solution is setting a limit number of digits after point by using round(). And also using round() when do 2 sum.
