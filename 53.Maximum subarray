@@ -1,0 +1,75 @@
+There are three solutions:
+
+Solution 1: recursive solution
+  in each recursive round, we get sum(nums[beg:end]), sum(nums[beg:mid]) and sum(nums[mid:end]). And we only return the max one of them to the caller.
+  So in the final round, we would get sum(nums[:]), the max value of num[:len(num)/2] and the max value of  num[len(num)/2:].
+  And we will finally return the max value of them.
+  
+  Because T(n) = 2T(n/2) + O(n) and T(1) = 1
+  So T(n) = O(nlogn)
+  
+Solution 2: one pass solution
+  Very good solution.
+  say in loop, we have a loop index, i
+  CurSum is the sum of nums[x:i] and CurSum is always larger than 0.
+  MaxSum is the max subarray so far.
+  And when CurSum < 0, we set as CurSum as 0.
+  What this means is that if CurSum < 0, it must not be included in the max subarray. So we remove them from CurSum by making it 0.
+  
+  Time complexity is O(N) since it's a one time pass.
+  Space complexity is O(2) for CurSum and MaxSum.
+
+
+# Solution 1:
+class Solution(object):
+    def get_max_sum(self, nums, beg, end):
+        if beg == end:
+            return nums[beg]
+            # if nums[beg] > 0:
+            #     return nums[beg]
+            # else:
+            #     return 0
+            
+        mid = (beg+end)/2
+        left_cur = 0
+        left_max = float('-inf')
+        for i in range(mid, beg-1, -1):
+            left_cur += nums[i]
+            left_max = max(left_max, left_cur)
+        right_cur = 0
+        right_max = float('-inf')
+        for i in range(mid+1, end+1):
+            right_cur += nums[i]
+            right_max = max(right_max, right_cur)
+        l_max = self.get_max_sum(nums, beg, mid)
+        r_max = self.get_max_sum(nums, mid+1, end)
+        return max((left_max+right_max), l_max, r_max)
+        
+    
+    def maxSubArray(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        if not nums or len(nums) == 0:
+            return 0
+        return self.get_max_sum(nums, 0, len(nums)-1)
+
+# Solution 2: first time try JAVA :)
+int MaxSubSum3(int *arr,int len)
+{
+ int i;
+ int MaxSum = 0;
+ int CurSum = 0;
+ for(i=0;i<len;i++)
+ {
+  CurSum += arr[i];
+  if(CurSum > MaxSum)
+   MaxSum = CurSum;
+  if(CurSum < 0)
+   CurSum = 0;
+ }
+ return MaxSum;
+}
+
+
