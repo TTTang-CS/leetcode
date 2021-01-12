@@ -1,0 +1,19 @@
+This is a easy problem and can be resolved brutally. One pointer pointing current value and the other pointer try to find the largest value after current.
+However, there are a one-pass solution. When we loop over prices, alway keep min_val as the lowest price in prices[0:current].
+Thus, profit = max(profit, prices[i]-min_val). 
+
+# my O(n) one-pass solution:
+class Solution(object):
+    def maxProfit(self, prices):
+        """
+        :type prices: List[int]
+        :rtype: int
+        """
+        if len(prices) < 2:
+            return 0
+        min_val = prices[0]
+        profit = 0
+        for i in range(len(prices)):
+            profit = max(profit, prices[i]-min_val)
+            min_val = min(min_val, prices[i])
+        return profit
