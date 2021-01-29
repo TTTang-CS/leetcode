@@ -1,0 +1,34 @@
+This question is whether this linked list is palindrome.
+A easy solution is 2 time pass + O(n) space complexity for a stack.
+However, there are a 2 time pass solution with O(1) space.
+This is a two pointer solution. One quicker pointer and one slow pointer.
+When the quicker pointer reaches the end, the slow one is right in the middle point.
+Then we can start the third pointer from beginning of list and check it with the slow one.
+Or we can also change the direction of the first half linked list when move slow pointer.
+So when the slow pointer reaches the middle point, we can start two pointer from middle point to each end.
+
+# Solution；
+# Definition for singly-linked list.
+# class ListNode(object):
+#     def __init__(self, x):
+#         self.val = x
+#         self.next = None
+
+class Solution(object):
+    def isPalindrome(self, head):
+        """
+        :type head: ListNode
+        :rtype: bool
+        """
+        rev = None
+        slow = fast = head
+        while fast and fast.next:
+            fast = fast.next.next
+            rev, rev.next, slow = slow, rev, slow.next
+        if fast:
+            slow = slow.next
+        while rev and rev.val == slow.val:
+            slow = slow.next
+            rev = rev.next
+        return not rev
+            
