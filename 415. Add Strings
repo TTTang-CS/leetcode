@@ -1,0 +1,35 @@
+When we do add operation, we ignore the carry num by spliting num1 and num2 by digit.
+eg: if num1 is 125 and num2 is 34
+
+we get res by following:
+res += (5 + 4) * 1
+res += (2 + 3) * 10
+res += (1 + 0) * 100
+
+class Solution(object):
+    def addStrings(self, num1, num2):
+        """
+        :type num1: str
+        :type num2: str
+        :rtype: str
+        """
+        def getInt(s):
+            return ord(s)-ord('0')
+        
+        if len(num1) < len(num2):
+            num1, num2 = num2, num1
+            
+        res = 0
+            
+        for i in range(len(num1)):
+            
+            base = 10 ** i
+            n1 = getInt(num1[len(num1)-1-i])
+            if (i < len(num2)):
+                n2 = getInt(num2[len(num2)-1-i])
+            else:
+                n2 = 0
+            
+            res += (n1+n2) * base
+            
+        return str(res)
