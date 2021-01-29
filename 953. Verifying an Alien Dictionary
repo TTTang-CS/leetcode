@@ -1,0 +1,40 @@
+We use hashmap to store the order, so we can query character in order with O(1).
+And with nested for loop, this solution time complexity is O(max_len_of_a_word * len(words)).
+
+Follow up:
+How can we sort words given order?
+1. quick sort but using order as comparator.
+2. bucket sort, each character in the order is a bucket.
+I think solution 2 will be a good solution. If there are a small words list, S1 and S2 have no big difference on performance.
+However, if we have a large amount of words in words list, S2 would be much more efficient.
+
+# Solution 1:
+class Solution(object):
+    def isAlienSorted(self, words, order):
+        """
+        :type words: List[str]
+        :type order: str
+        :rtype: bool
+        """
+        orderDic = {}
+        i = 1
+        for c in order:
+            orderDic[c] = i
+            i += 1
+        i = 0
+        while i < len(words)-1:
+            for index in range(max(len(words[i]), len(words[i+1]))):
+                if index < len(words[i]):
+                    pre = orderDic[words[i][index]]
+                else:
+                    pre = 0
+                if index < len(words[i+1]):
+                    cur = orderDic[words[i+1][index]]
+                else:
+                    cur = 0
+                if pre > cur:
+                    return False
+                elif pre < cur:
+                    break
+            i += 1
+        return True
