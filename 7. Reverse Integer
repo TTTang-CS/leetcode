@@ -1,0 +1,59 @@
+S1 is a simple solution by math.
+S2 is a triky soluton with string operation.
+
+# Solution 1:
+class Solution(object):
+    def reverse(self, x):
+        """
+        :type x: int
+        :rtype: int
+        """
+        if x == 0:
+            return x
+        
+        isPositive = True
+        
+        if x < 0:
+            isPositive = False
+            x = (-1) * x
+        
+        arr = []
+        while x != 0:
+            arr.append(x%10)
+            x /= 10
+        
+        i = 0
+        while arr[i] == 0:
+            i += 1
+            
+        ans = 0
+        INTMAX = 2 ** 31
+        for m in range(i, len(arr)):
+            if ans > INTMAX:
+                return 0
+            ans += arr[m] * (10 ** (len(arr)-m-1))
+            
+        return ans if isPositive else (-1)*ans
+        
+This problem wants us to reverse integer ans also avoid overflowing.
+Thus, the if sentence "if ans > INTMAX" is indispensable.
+
+# Solution 2:
+class Solution(object):
+    def reverse(self, x):
+        s = cmp(x, 0)
+        r = int(`s*x`[::-1])
+        return s*r * (r < 2**31)
+        
+This solution use many inbuilt funcs.
+  repr(): repr(s*x) can be written as `s*x`, repr(a) return the string representation of the object a
+  
+Using eg to illustrate this solution:
+  Set x := -123
+  s = cmp(-123, 0) Thus s == -1
+  r = int(`s*x`[::-1])
+    `s*x` equals to repr(s*x) Thus `s*x` == repr(s*x) == repr(123) == "123"
+    `s*x`[::-1] == "123"[::-1] == "321"
+    r = int(`s*x`[::-1]) == int("321") == 321
+  return s*r * (r < 2**31)
+    if r < 2**31, return s*r, else return False == 0
